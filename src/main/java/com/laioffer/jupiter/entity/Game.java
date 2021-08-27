@@ -1,12 +1,9 @@
-package com.laioffer.jupiter.entiry;
+package com.laioffer.jupiter.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-
-import javax.servlet.ReadListener;
-import java.util.Locale;
 
 /**
  * @Description:get TWICH api, match the twich response
@@ -34,20 +31,7 @@ import java.util.Locale;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonDeserialize(builder = Game.Builder.class)
 public class Game {
-//    @JsonProperty("name")
-//    private String name;
-//
-//    @JsonProperty("developer")
-//    private String developer;
-//
-//    @JsonProperty("releaseTime")
-//    private String releaseTime;
-//
-//    @JsonProperty("website")
-//    private String website;
-//
-//    @JsonProperty("price")
-//    private double price;
+
 
     @JsonProperty("id")
     private final String id;
@@ -55,10 +39,10 @@ public class Game {
     @JsonProperty("name")
     private final String name;
 
-    @JsonProperty("boxArtUrl")
+    @JsonProperty("box_art_url")
     private final String boxArtUrl;
 
-    public Game(Builder builder) {
+    private Game(Builder builder) {
         this.id = builder.id;
         this.name = builder.name;
         this.boxArtUrl = builder.boxArtUrl;
@@ -76,42 +60,9 @@ public class Game {
         return boxArtUrl;
     }
 
-    //    public String getName() {
-//        return name;
-//    }
-//
-//    public String getDeveloper() {
-//        return developer;
-//    }
-//
-//    public String getReleaseTime() {
-//        return releaseTime;
-//    }
-//
-//    public String getWebsite() {
-//        return website;
-//    }
-//
-//    public double getPrice() {
-//        return price;
-//    }
-
-//    public Game(Builder builder) {
-//        this.name = builder.name;
-//        this.developer = builder.developer;
-//        this.releaseTime = builder.releaseTime;
-//        this.website = builder.website;
-//        this.price = builder.price;
-//
-//    }
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class Builder {
-//        private String name;
-//        private String developer;
-//        private String releaseTime;
-//        private String website;
-//        private double price;
 
         @JsonProperty("id")
         private String id;
@@ -119,7 +70,7 @@ public class Game {
         @JsonProperty("name")
         private String name;
 
-        @JsonProperty("boxArtUrl")
+        @JsonProperty("box_art_url")
         private String boxArtUrl;
 
         public Builder id(String id) {
@@ -132,7 +83,7 @@ public class Game {
             return this;
         }
 
-        public Builder boxArtUrld(String boxArtUrl) {
+        public Builder boxArtUrl(String boxArtUrl) {
             this.boxArtUrl = boxArtUrl;
             return this;
         }
@@ -141,33 +92,6 @@ public class Game {
             return new Game(this);
         }
 
-//        public Builder setName(String name) {
-//            this.name = name;
-//            return this;
-//        }
-//
-//        public Builder setDeveloper(String developer) {
-//            this.developer = developer;
-//            return this;
-//        }
-//
-//        public Builder setReleaseTime(String releaseTime) {
-//            this.releaseTime = releaseTime;
-//            return this;
-//        }
-//
-//        public Builder setWebsite(String website) {
-//            this.website = website;
-//            return this;
-//        }
-//
-//        public Builder setPrice(double price) {
-//            this.price = price;
-//            return this;
-//        }
-//
-//        public Game build() {
-//            return new Game(this);
-//        }
+
     }
 }
