@@ -78,6 +78,13 @@
             <version>8.0.22</version>
         </dependency>
 
+<!--        generate encrypted password-->
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.15</version>
+        </dependency>
+
 
     </dependencies>
 

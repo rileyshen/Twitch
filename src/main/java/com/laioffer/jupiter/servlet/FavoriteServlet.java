@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.awt.geom.RectangularShape;
 import java.io.IOException;
 import java.lang.annotation.Repeatable;
@@ -20,7 +21,12 @@ import java.util.Map;
 @WebServlet(name = "FavoriteServlet", urlPatterns = {"/favorite"})
 public class FavoriteServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String userId = request.getParameter("user_id");
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+        String userId = (String)session.getAttribute ("user_id");
 
         ObjectMapper mapper = new ObjectMapper();
         FavoriteRequestBody body = mapper.readValue(request.getReader(), FavoriteRequestBody.class);
@@ -43,7 +49,12 @@ public class FavoriteServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String userId = req.getParameter("user_id");
+        HttpSession session = req.getSession(false);
+        if (session == null) {
+            resp.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+        String userId = (String)session.getAttribute ("user_id");
         ObjectMapper mapper = new ObjectMapper();
         FavoriteRequestBody body = mapper.readValue(req.getReader(), FavoriteRequestBody.class);
         if (body == null) {
@@ -67,7 +78,12 @@ public class FavoriteServlet extends HttpServlet {
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String userId = request.getParameter("user_id");
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+        String userId = (String) session.getAttribute("user_id");
 
         Map<String, List<Item>> itemMap;
 
@@ -75,8 +91,8 @@ public class FavoriteServlet extends HttpServlet {
         try {
             connection = new MySQLConnection();
             itemMap = connection.getFavoriteItems(userId);
-            response.setContentType("application/json;charset=UTF-8");
-            response.getWriter().print(new ObjectMapper().writeValueAsString(itemMap));
+
+           ServletUtil.writeItemMap(response, itemMap);
 
         } catch (MySQLException e) {
             throw new ServletException(e);
