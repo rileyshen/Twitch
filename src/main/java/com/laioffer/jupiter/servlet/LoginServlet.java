@@ -16,10 +16,9 @@ import java.io.IOException;
 @WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        LoginRequestBody body = mapper.readValue(request.getReader(), LoginRequestBody.class);
 
-     
+
+        LoginRequestBody body = ServletUtil.readRequestBody(LoginRequestBody.class, request);
 
         if (body == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

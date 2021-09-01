@@ -15,8 +15,9 @@ import java.io.IOException;
 @WebServlet(name = "RegisterServlet", urlPatterns = {"/register"})
 public class RegisterServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        User user = mapper.readValue(request.getReader(), User.class);
+
+        User user = ServletUtil.readRequestBody(User.class, request);
+
         if (user == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
