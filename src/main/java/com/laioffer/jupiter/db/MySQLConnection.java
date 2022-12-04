@@ -46,7 +46,7 @@ public class MySQLConnection {
 
         saveItem(item);
 
-        String sql = "INSERT IGNORE INTO favorite_records (user_id, item_id) VALUES(?, ?)";
+        String sql = "INSERT IGNORE INTO favorite_records (user_id, item_id) VALUES (?, ?)";
 
         try {
             PreparedStatement statement = conn.prepareStatement(sql);

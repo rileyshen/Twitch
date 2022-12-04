@@ -28,8 +28,7 @@ import java.util.*;
 
 
 public class TwitchClient {
-    private static final String TOKEN = "Bearer 3rivbzwbm30naluyktui1sji6hb7bu";
-//    private static final String TOKEN = "Bearer nojy9mtdb69cch566xhugjklz14yqj";
+    private static final String TOKEN = "Bearer ddx06i6thux3yl5v1jnugx9mqrk8kt";
     private static final String CLIENT_ID = "t5bc5a4tab71mqgs1f880ent6cx8j4";
     private static final String TOP_GAME_URL = "https://api.twitch.tv/helix/games/top?first=%s";
     private static final String GAME_SEARCH_URL_TEMPLATE = "https://api.twitch.tv/helix/games?name=%s";
@@ -47,7 +46,9 @@ public class TwitchClient {
 
     // Build the request URL which calls Twich APIS
     // https://api.twitch.tv/helix/games/top
+    //"https://api.twitch.tv/helix/games?name=%s";
     // Build the request URL which will be used when calling Twitch APIs, e.g. https://api.twitch.tv/helix/games/top when trying to get top games.
+
     private String buildGameURL(String url, String gameName, int limit) {
         if (gameName.equals("")) {
             return String.format(url, limit);
@@ -63,7 +64,7 @@ public class TwitchClient {
     }
 
     // sent HTTP request to Twitch Backend based on the given URL, and returns the body of the HTTP response returned from Twitch backend
-    // Send HTTP request to Twitch Backend based on the given URL, and returns the body of the HTTP response returned from Twitch backend.
+   // http://localhost:8080/jupiter/search?game_id=490422
     private String searchTwitch(String url) throws TwitchException {
 
 

@@ -5,6 +5,7 @@ import com.laioffer.jupiter.db.MySQLConnection;
 import com.laioffer.jupiter.db.MySQLException;
 import com.laioffer.jupiter.entity.FavoriteRequestBody;
 import com.laioffer.jupiter.entity.Item;
+import com.laioffer.jupiter.entity.User;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,32 +22,34 @@ import java.util.Map;
 @WebServlet(name = "FavoriteServlet", urlPatterns = {"/favorite"})
 public class FavoriteServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // check if the session is still valid
         HttpSession session = request.getSession(false);
         if (session == null) {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
-        String userId = (String)session.getAttribute ("user_id");
 
+        String userId = (String) session.getAttribute("user_id");
+        // Get favorite item information from request body
         FavoriteRequestBody body = ServletUtil.readRequestBody(FavoriteRequestBody.class, request);
 
-        if (body == null) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return;
-        }
+       if (body == null) {
+           response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+           return;
+       }
         MySQLConnection connection = null;
         try {
+            // Save the favorite item to the database
             connection = new MySQLConnection();
             connection.setFavoriteItem(userId, body.getFavoriteItem());
-    } catch (MySQLException e) {
+        } catch (MySQLException e) {
             throw new ServletException(e);
         } finally {
-            if (connection != null) {
-                connection.close();
-            }
-        }
-        }
 
+            connection.close();
+
+        }
+}
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession(false);
@@ -54,11 +57,10 @@ public class FavoriteServlet extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
-        String userId = (String)session.getAttribute ("user_id");
+
+        String userId = (String) session.getAttribute("user_id");
 
         FavoriteRequestBody body = ServletUtil.readRequestBody(FavoriteRequestBody.class, req);
-
-
         if (body == null) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
@@ -76,7 +78,6 @@ public class FavoriteServlet extends HttpServlet {
                 connection.close();
             }
         }
-
     }
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -85,17 +86,17 @@ public class FavoriteServlet extends HttpServlet {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
+
         String userId = (String) session.getAttribute("user_id");
-
         Map<String, List<Item>> itemMap;
-
         MySQLConnection connection = null;
         try {
+            // Read the favorite items from the database
             connection = new MySQLConnection();
             itemMap = connection.getFavoriteItems(userId);
-
-           ServletUtil.writeItemMap(response, itemMap);
-
+//            response.setContentType("application/json;charset=UTF-8");
+//            response.getWriter().print(new ObjectMapper().writeValueAsString(itemMap));
+            ServletUtil.writeItemMap(response, itemMap);
         } catch (MySQLException e) {
             throw new ServletException(e);
         } finally {
@@ -104,4 +105,5 @@ public class FavoriteServlet extends HttpServlet {
             }
         }
     }
+
 }

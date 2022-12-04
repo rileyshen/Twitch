@@ -35,7 +35,7 @@ public class MySQLTableCreator {
             sql = "DROP TABLE IF EXISTS items";
             statement.executeUpdate(sql);
 
-            sql = "DROP TABLE IF EXISTS user";
+            sql = "DROP TABLE IF EXISTS users";
             statement.executeUpdate(sql);
 
             // Step 3 Create new tables.
@@ -61,19 +61,21 @@ public class MySQLTableCreator {
             statement.executeUpdate(sql);
 
 
-            sql = "CREATE TABLE favorite_records (" +
-                    "user_id VARCHAR (255) NOT NULL, " +
-                    "item_id VARCHAR (255) NOT NULL," +
-                    "last_favor_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP," +
-                    "PRIMARY KEY (user_id, item_id)," +
-                    "FOREIGN KEY (user_id) REFERENCES users(id)," +
-                    "FOREIGN KEY (item_id) REFERENCES items(id)" +
-                    ")" ;
+
+            sql = "CREATE TABLE favorite_records ("
+                    + "user_id VARCHAR(255) NOT NULL,"
+                    + "item_id VARCHAR(255) NOT NULL,"
+                    + "last_favor_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,"
+                    + "PRIMARY KEY (user_id, item_id),"
+                    + "FOREIGN KEY (user_id) REFERENCES users(id),"
+                    + "FOREIGN KEY (item_id) REFERENCES items(id)"
+                    + ")";
             statement.executeUpdate(sql);
             // Step 4: insert fake user 1111/3229c1097c00d497a0fd282d586be050.
 
             sql = "INSERT INTO users VALUES ('1111', '3229c1097c00d497a0fd282d586be050', 'John', 'Smith')";
             statement.executeUpdate(sql);
+
 
             conn.close();
             System.out.println("Import done successfully");

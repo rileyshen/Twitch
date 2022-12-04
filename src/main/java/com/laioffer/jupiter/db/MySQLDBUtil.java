@@ -12,7 +12,10 @@ import java.util.Properties;
  * @Create 2021-08-24
  */
 public class MySQLDBUtil {
-    private static final String INSTANCE = "laiproject-instance.cnjxyyzonn5h.us-east-2.rds.amazonaws.com";
+
+    private static final String INSTANCE = "laiproject-instance.cvo9emyrt9jd.ap-northeast-1.rds.amazonaws.com";
+
+
     private static final String PORT_NUM = "3306";
     private static final String DB_NAME = "jupiter";
 

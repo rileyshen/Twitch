@@ -17,8 +17,8 @@ import java.io.IOException;
 public class LoginServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-
         LoginRequestBody body = ServletUtil.readRequestBody(LoginRequestBody.class, request);
+
 
         if (body == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

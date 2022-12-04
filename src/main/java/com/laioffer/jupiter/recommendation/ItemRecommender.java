@@ -31,7 +31,7 @@ public class ItemRecommender {
         for (Game game : topGames) {
             List<Item> items;
             try {
-                items = client.searchByType(game.getId(), type, DEFAULT_TOTAL_RECOMMENDATION_LIMIT);
+                items = client.searchByType(game.getId(), type, DEFAULT_PER_GAME_RECOMMENDATION_LIMIT);
             } catch (TwitchException e) {
                 throw new RecommendationException("Failed to get recommendation resul");
             }

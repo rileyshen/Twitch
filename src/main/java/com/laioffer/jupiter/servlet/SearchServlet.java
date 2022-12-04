@@ -31,6 +31,7 @@ public class SearchServlet extends HttpServlet {
         String gameId = request.getParameter("game_id");
         if (gameId == null) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
         }
 
         TwitchClient client = new TwitchClient();

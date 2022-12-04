@@ -70,22 +70,22 @@ public class User {
         @JsonProperty("last_name")
         private String lastName;
 
-        public Builder setUserId(String userId) {
+        public Builder userId(String userId) {
             this.userId = userId;
             return this;
         }
 
-        public Builder Password(String password) {
+        public Builder password(String password) {
             this.password = password;
             return this;
         }
 
-        public Builder FirstName(String firstName) {
+        public Builder firstName(String firstName) {
             this.firstName = firstName;
             return this;
         }
 
-        public Builder LastName(String lastName) {
+        public Builder lastName(String lastName) {
             this.lastName = lastName;
             return this;
         }
