@@ -1,25 +1,75 @@
 import React from 'react';
-import { Button, Col, Layout, Row, message, Menu } from 'antd';
+import { Button, Col, Layout, Menu, message, Row } from 'antd';
 import Login from './components/Login';
 import Register from './components/Register';
-import { logout, getTopGames} from './utils';
+import { getFavoriteItem, getRecommendations, getTopGames, logout, searchGameById } from './utils';
 import Favorites from './components/Favorites';
 import { LikeOutlined, FireOutlined } from '@ant-design/icons';
 import CustomSearch from './components/CustomSearch';
 import SubMenu from 'antd/lib/menu/SubMenu';
-
+import Home from './components/Home';
+ 
 const { Header, Content, Sider } = Layout;
-
  
 class App extends React.Component {
   state = {
     loggedIn: false,
-    topGames: []
+    topGames: [],
+    resources: {
+      VIDEO: [],
+      STREAM: [],
+      CLIP: [],
+    },
+    favoriteItems: {
+      VIDEO: [],
+      STREAM: [],
+      CLIP: [],
+    },
+  }
+ 
+  favoriteOnChange = () => {
+    getFavoriteItem().then((data) => {
+      this.setState({
+        favoriteItems: data,
+        loggedIn: true
+      })
+    }).catch((err) => {
+      message.error(err.message);
+    })
+  }
+ 
+  onGameSelect = ({ key }) => {
+    if (key === 'Recommendation') {
+      getRecommendations().then((data) => {
+        this.setState({
+          resources: data,
+        })
+      })
+ 
+      return;
+    }
+ 
+    searchGameById(key).then((data) => {
+      this.setState({
+        resources: data,
+      })
+    })
+  }
+ 
+  customSearchOnSuccess = (data) => {
+    this.setState({
+      resources: data,
+    })
   }
  
   signinOnSuccess = () => {
-    this.setState({
-      loggedIn: true
+    getFavoriteItem().then((data) => {
+      this.setState({
+        favoriteItems: data,
+        loggedIn: true
+      })
+    }).catch((err) => {
+      message.error(err.message);
     })
   }
  
@@ -34,6 +84,7 @@ class App extends React.Component {
         message.error(err.message);
       })
   }
+ 
   componentDidMount = () => {
     getTopGames()
       .then((data) => {
@@ -45,7 +96,7 @@ class App extends React.Component {
         message.error(err.message);
       })
   }
-
+ 
   render = () => (
     <Layout>
       <Header>
@@ -53,7 +104,7 @@ class App extends React.Component {
             <Col>
               {
                 this.state.loggedIn &&
-                <Favorites />
+                <Favorites data={this.state.favoriteItems} />
               }
             </Col>
             <Col>
@@ -73,15 +124,15 @@ class App extends React.Component {
       </Header>
       <Layout>
         <Sider width={300} className="site-layout-background">
-        <CustomSearch />
+          <CustomSearch onSuccess={this.customSearchOnSuccess} />
           <Menu
             mode="inline"
-            onSelect={() => {}}
-  		 style={{ marginTop: '10px' }}
+            onSelect={this.onGameSelect}
+            style={{ marginTop: '10px' }}
           >
             <Menu.Item icon={<LikeOutlined />} key="Recommendation">
               Recommend for you!</Menu.Item>
-            <SubMenu icon={<FireOutlined />} key="Popular Games" title="Popular Games" className="site-top-game-list" >
+            <SubMenu icon={<FireOutlined />} key="Popular Games" title="Popular Games" className="site-top-game-list">
               {
                 this.state.topGames.map((game) => {
                   return (
@@ -111,7 +162,12 @@ class App extends React.Component {
               overflow: 'auto'
             }}
           >
-            {'Home'} 
+            <Home 
+              resources={this.state.resources} 
+              loggedIn={this.state.loggedIn} 
+              favoriteItems={this.state.favoriteItems} 
+              favoriteOnChange={this.favoriteOnChange}
+            />
           </Content>
         </Layout>
       </Layout>
@@ -120,3 +176,4 @@ class App extends React.Component {
 }
  
 export default App;
+ 
